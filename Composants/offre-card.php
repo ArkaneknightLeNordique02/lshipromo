@@ -47,17 +47,6 @@
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
         </button>
-        
-        <!-- Bouton WhatsApp -->
-        <a href="https://wa.me/+243801816424, je suis intéressé par : <?php echo urlencode($produit . ' - ' . $details['prix-promo'] . $details['devise']); ?>"
-           target="_blank"
-           class="whatsapp-btn group/wa relative bg-gradient-to-br from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white p-2.5 rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-green-500/50"
-           aria-label="Commander sur WhatsApp">
-            
-            <svg class="w-5 h-5 transition-transform duration-300 group-hover/wa:scale-110" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.507 14.307l-.009.075c-.266 1.164-.786 3.207-1.002 3.84-.126.36-.412.551-.714.512-.271-.034-.693-.176-1.549-.456-1.337-.435-3.6-1.546-5.49-3.434-2.255-2.269-3.452-4.758-3.892-6.408-.218-.814-.28-1.249.169-1.771.182-.214.446-.345.729-.358.301-.014.75-.016 1.076.094.349.118.742.401 1.056.896.787 1.24 1.189 1.888 1.377 2.187.215.34.302.478.413.683.115.217.049.338-.025.475-.059.108-.134.243-.215.395-.157.295-.333.625-.475.851-.096.154-.195.301-.284.449-.094.157-.198.31-.134.504.088.266.439 1.157 1.08 2.085 1.01 1.461 2.073 2.542 3.316 3.252.84.479 1.49.746 2.078.916.371.107.707.181 1.016.181.378 0 .699-.079.948-.235.303-.19.461-.499.557-.915.034-.148.074-.333.11-.535.116-.648.232-1.455.349-2.331z"/>
-            </svg>
-        </a>
     </div>
     
     <!-- Section image -->
@@ -66,23 +55,10 @@
         <!-- Image produit -->
         <div class="relative h-56 overflow-hidden">
             <img class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" 
-                 src="<?php echo 'IMAGE/' . $details['image']; ?>" 
+                 src="<?php echo  $details['image']; ?>" 
                  alt="<?php echo htmlspecialchars($produit); ?>"
                  loading="lazy"
                  onerror="this.src='https://via.placeholder.com/400x300/3B82F6/FFFFFF?text=Image+Non+Disponible'; this.onerror=null;">
-            
-            <!-- Bouton vue rapide -->
-            <div class="quick-view-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
-                <button class="w-full bg-white/25 hover:bg-white/35 backdrop-blur-md text-white text-sm font-medium py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
-                        onclick="quickView('<?php echo htmlspecialchars($produit); ?>')">
-                    <!-- SVG Eye -->
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
-                    Voir rapidement
-                </button>
-            </div>
         </div>
     </div>
     
@@ -132,7 +108,7 @@
    target="_blank"
    rel="noopener noreferrer"
    class="whatsapp-main-btn group relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-[#25D366] to-[#128C7E] p-4 text-white font-bold shadow-lg shadow-[#25D366]/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-[#25D366]/50 hover:from-[#128C7E] hover:to-[#075E54] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 dark:focus:ring-offset-gray-900"
-   aria-label="Commander ce produit sur WhatsApp">
+   aria-label="Commander">
     
     <!-- Effet de brillance amélioré -->
     <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
@@ -148,30 +124,11 @@
                  fill="white">
                 <path d="M12.032 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.96 9.96 0 0 1-4.587-1.112l-3.826 1.067 1.067-3.826A9.96 9.96 0 0 1 2 12.032C2 6.509 6.509 2 12.032 2zm0 1.5a8.532 8.532 0 0 0-8.532 8.532c0 1.502.387 2.91 1.063 4.136l.15.267-.803 2.878 2.878-.803.267.15a8.532 8.532 0 0 0 13.019-7.428 8.532 8.532 0 0 0-8.532-8.532z"/>
             </svg>
-            
-            <!-- Petit point de notification animé -->
-            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-white rounded-full animate-ping opacity-75"></span>
-            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-white rounded-full"></span>
         </div>
-        
         <!-- Texte du bouton avec effets -->
         <span class="flex flex-col items-start">
             <span class="text-sm md:text-base font-bold tracking-wide flex items-center gap-1">
-                COMMANDER SUR WHATSAPP
-                <!-- Flèche animée -->
-                <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
-                     xmlns="http://www.w3.org/2000/svg" 
-                     fill="none" 
-                     viewBox="0 0 24 24" 
-                     stroke="white" 
-                     stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-            </span>
-            
-            <!-- Sous-titre avec le prix et réduction -->
-            <span class="text-[10px] md:text-xs text-white/80 font-normal">
-                ⚡ <?php echo $discount; ?>% OFF • <?php echo number_format($details['prix-promo'], 0); ?><?php echo $details['devise']; ?>
+                COMMANDER
             </span>
         </span>
     </div>

@@ -5,484 +5,389 @@ $metaDescription = "Découvrez les meilleures promotions du moment sur LSHIPROMO
 require 'portions/header.php'; 
 require 'modele/promotion_Data.php';
 
-// Tri des magasins par nombre d'offres (optionnel)
+// Tri intelligent
 uasort($promotion, function($a, $b) {
     return count($b) - count($a);
 });
+
+// Stats instantanées
+$totalOffers = array_sum(array_map('count', $promotion));
+$topStore = array_key_first($promotion);
 ?>
 
-<!-- Hero Section améliorée -->
-<section class="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-16 mb-12 overflow-hidden">
-    <div class="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-fade-in flex items-center justify-center gap-3">
-                <!-- SVG Rocket -->
-                <svg class="w-12 h-12 md:w-16 md:h-16 text-yellow-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19ZM5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5ZM21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.92 10.53 7.7 12.31C7.57 13.33 7.61 14.37 7.84 15.41L2.29 20.96C1.9 21.35 1.9 21.98 2.29 22.37C2.68 22.76 3.31 22.76 3.7 22.37L8.59 17.48C9.63 17.71 10.67 17.75 11.69 17.62C13.47 17.4 15.88 16.51 18.07 14.32C23.73 8.66 21.61 2.39 21.61 2.39Z"/>
-                </svg>
-                Les meilleures offres
-            </h1>
-            <p class="text-xl md:text-2xl opacity-90 mb-8 flex items-center justify-center gap-2">
-                <!-- SVG Verified -->
-                <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                Les meilleures offres sélectionnées et vérifiées pour vous
-            </p>
-            
-            <!-- Stats en temps réel -->
-            <div class="flex flex-wrap justify-center gap-6 md:gap-10 mt-8">
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-yellow-300 flex items-center justify-center gap-2">
-                        <!-- SVG Store -->
-                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
-                        </svg>
-                        <?php echo count($promotion); ?>
-                    </div>
-                    <div class="text-sm opacity-80">Magasins</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-yellow-300 flex items-center justify-center gap-2">
-                        <!-- SVG Tag -->
-                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
-                        </svg>
-                        <?php 
-                        $totalOffers = 0;
-                        foreach($promotion as $produits) {
-                            $totalOffers += count($produits);
-                        }
-                        echo $totalOffers;
-                        ?>
-                    </div>
-                    <div class="text-sm opacity-80">Offres actives</div>
-                </div>
-               <div class="text-center">
-    <div class="text-3xl font-bold text-yellow-300 flex items-center justify-center gap-2">
-        <!-- SVG Clock -->
-        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-        </svg>
-        <?php
-        // Version 1: Basée sur l'heure actuelle du serveur
-        date_default_timezone_set('Europe/Paris'); // À adapter à votre fuseau horaire
-        
-        // Calcul du temps depuis la dernière mise à jour
-        $lastUpdateHour = 8; // Heure de la dernière mise à jour (ex: 8h du matin)
-        $currentHour = (int)date('H');
-        
-        if ($currentHour >= $lastUpdateHour) {
-            $hoursSinceUpdate = $currentHour - $lastUpdateHour;
-        } else {
-            $hoursSinceUpdate = (24 - $lastUpdateHour) + $currentHour;
-        }
-        
-        // Afficher dynamiquement
-        if ($hoursSinceUpdate < 1) {
-            echo "<span class='text-green-400 animate-pulse'>Maintenant</span>";
-        } elseif ($hoursSinceUpdate <= 24) {
-            echo $hoursSinceUpdate . "h";
-        } else {
-            echo "24h+";
-        }
-        ?>
-    </div>
-    <div class="text-sm opacity-80">Mises à jour</div>
-</div>
-            </div>
-        </div>
+<!-- Hero ultra compact premium -->
+<section class="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white py-8 mb-6 overflow-hidden">
+    <!-- Pattern subtil -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30 L45 15 L60 30 L45 45 Z' fill='white' opacity='0.1'/%3E%3C/svg%3E'); background-size: 30px 30px;"></div>
     </div>
     
-    <!-- Vague décorative -->
-    <div class="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="fill-current text-white dark:text-gray-900 w-full h-12">
-            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
-            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35,6.36,119.13-6.43C939.06,29.08,1077.14,52.48,1200,78.67V0Z" opacity=".5"></path>
-            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
-        </svg>
+    <div class="relative max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between">
+            <!-- Titre compact -->
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <div class="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center shadow-2xl">
+                        <svg class="w-6 h-6 text-yellow-300" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19ZM5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5ZM21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.92 10.53 7.7 12.31C7.57 13.33 7.61 14.37 7.84 15.41L2.29 20.96C1.9 21.35 1.9 21.98 2.29 22.37C2.68 22.76 3.31 22.76 3.7 22.37L8.59 17.48C9.63 17.71 10.67 17.75 11.69 17.62C13.47 17.4 15.88 16.51 18.07 14.32C23.73 8.66 21.61 2.39 21.61 2.39Z"/>
+                        </svg>
+                    </div>
+                    <div class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-indigo-600 animate-pulse"></div>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                        Offres Flash
+                        <span class="text-[10px] font-mono bg-white/20 px-1.5 py-0.5 rounded-md">LIVE</span>
+                    </h1>
+                    <p class="text-[11px] opacity-90 flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-5m6 2c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8z"/>
+                        </svg>
+                        Vérifiées aujourd'hui
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Stats compactes -->
+            <div class="flex items-center gap-2">
+                <!-- Total magasins -->
+                <div class="flex items-center gap-1.5 px-2 py-1.5 bg-white/10 backdrop-blur rounded-lg">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                    </svg>
+                    <span class="text-xs font-bold"><?php echo count($promotion); ?></span>
+                </div>
+                <!-- Total offres -->
+                <div class="flex items-center gap-1.5 px-2 py-1.5 bg-white/10 backdrop-blur rounded-lg">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
+                    </svg>
+                    <span class="text-xs font-bold"><?php echo $totalOffers; ?></span>
+                </div>
+                <!-- Top store -->
+                <div class="hidden sm:flex items-center gap-1.5 px-2 py-1.5 bg-yellow-400/20 backdrop-blur rounded-lg">
+                    <svg class="w-3.5 h-3.5 text-yellow-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                    <span class="text-[10px] font-medium"><?php echo $topStore; ?></span>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Filtres par magasin -->
-    <div class="sticky top-4 z-10 mb-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm p-4 rounded-xl shadow-lg">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                <!-- SVG Filter -->
-                <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+<main class="max-w-7xl mx-auto px-3 sm:px-4">
+    <!-- Filtres flottants premium -->
+    <div class="sticky top-2 z-20 mb-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-2">
+        <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+            <!-- Filtre tous -->
+            <button onclick="resetFilters()" class="flex-shrink-0 px-2.5 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[10px] font-semibold rounded-lg flex items-center gap-1 shadow-md">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
-                Filtrer par magasin :
-            </h2>
-            <div class="flex flex-wrap gap-2">
-                <?php foreach(array_keys($promotion) as $index => $magasin): ?>
-                <button 
-                    onclick="scrollToSection('<?php echo preg_replace('/[^a-z0-9]/i', '', $magasin); ?>')"
-                    class="magasin-filter px-4 py-2 rounded-lg transition-all duration-300 bg-gray-100 dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-300 font-medium flex items-center gap-1"
-                    data-magasin="<?php echo preg_replace('/[^a-z0-9]/i', '', $magasin); ?>">
-                    <!-- SVG Store Outline -->
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                    <?php echo $magasin; ?> (<?php echo count($promotion[$magasin]); ?>)
-                </button>
-                <?php endforeach; ?>
-            </div>
-            <div class="text-sm text-gray-500 flex items-center gap-1">
-                <!-- SVG Lightbulb -->
-                <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/>
-                </svg>
-                <span class="font-semibold text-blue-600">Astuce :</span> Cliquez sur un magasin pour y accéder directement
-            </div>
+                Tous
+            </button>
+            
+            <!-- Filtres magasins compacts -->
+            <?php foreach(array_keys($promotion) as $index => $magasin): 
+                $count = count($promotion[$magasin]);
+                $magasinId = preg_replace('/[^a-z0-9]/i', '', $magasin);
+            ?>
+            <button onclick="scrollToSection('<?php echo $magasinId; ?>')" 
+                    data-magasin="<?php echo $magasinId; ?>"
+                    class="magasin-filter flex-shrink-0 px-2.5 py-1.5 bg-gray-100 dark:bg-gray-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-lg text-[10px] font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-300 flex items-center gap-1 transition-all border border-transparent hover:border-indigo-200 dark:hover:border-indigo-800">
+                <span class="w-4 h-4 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full text-[8px] font-bold group-hover:bg-indigo-200">
+                    <?php echo strtoupper(substr($magasin, 0, 1)); ?>
+                </span>
+                <?php echo $magasin; ?>
+                <span class="ml-0.5 px-1 py-0.5 bg-white dark:bg-gray-900 rounded text-[7px] font-mono">
+                    <?php echo $count; ?>
+                </span>
+            </button>
+            <?php endforeach; ?>
+        </div>
+        
+        <!-- Info temps réel -->
+        <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 rounded-full text-[7px] font-medium text-emerald-700 dark:text-emerald-300 flex items-center gap-1">
+            <div class="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
+            <?php echo $totalOffers; ?> offres disponibles
         </div>
     </div>
 
+    <!-- Sections magasins premium -->
     <?php foreach($promotion as $magasins => $produits): 
-    $magasinId = preg_replace('/[^a-z0-9]/i', '', $magasins);
+        $magasinId = preg_replace('/[^a-z0-9]/i', '', $magasins);
+        $storeInitial = strtoupper(substr($magasins, 0, 1));
+        $gradients = ['from-blue-500 to-cyan-500', 'from-purple-500 to-pink-500', 'from-emerald-500 to-teal-500', 'from-orange-500 to-red-500'];
+        $gradient = $gradients[$index % count($gradients)] ?? 'from-indigo-500 to-purple-500';
     ?>
     
-    <!-- Section magasin avec ID pour le scroll -->
-    <section id="<?php echo $magasinId; ?>" class="magasin-section mb-16 scroll-mt-24">
-        <!-- En-tête améliorée -->
-        <div class="mb-10 pb-6 border-b border-gray-200 dark:border-gray-700">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div class="flex items-center">
-                    <div class="relative">
-                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg ring-4 ring-blue-100 dark:ring-blue-900/30">
-                            <span class="text-white font-bold text-2xl">
-                                <?php echo strtoupper(substr($magasins, 0, 1)); ?>
-                            </span>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                            <!-- SVG Hot/Fire -->
-                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM12 20c-3.31 0-6-2.69-6-6 0-1.53.3-3.04.86-4.43 1.01 1.01 2.41 1.63 3.97 1.63 2.66 0 4.75-2.09 4.75-4.64 0-1.31-.53-2.57-1.48-3.5C16.11 5.5 18 9.11 18 14c0 3.31-2.69 6-6 6z"/>
-                            </svg>
-                        </div>
+    <section id="<?php echo $magasinId; ?>" class="magasin-section mb-6 scroll-mt-16 group/store">
+        <!-- En-tête magasin compact premium -->
+        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-200 dark:border-gray-800">
+            <div class="flex items-center gap-2">
+                <!-- Avatar magasin avec gradient -->
+                <div class="relative">
+                    <div class="w-10 h-10 bg-gradient-to-br <?php echo $gradient; ?> rounded-xl flex items-center justify-center shadow-md group-hover/store:scale-110 transition-transform">
+                        <span class="text-white font-bold text-sm"><?php echo $storeInitial; ?></span>
                     </div>
-                    <div>
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                            <?php echo $magasins; ?>
-                            <span class="text-sm font-normal bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full flex items-center gap-1">
-                                <!-- SVG New/Sparkles -->
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
-                                </svg>
-                                NOUVEAU
-                            </span>
-                        </h2>
-                        <p class="text-gray-600 dark:text-gray-400 mt-1 flex items-center gap-1">
-                            <!-- SVG Update/Refresh -->
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-                            </svg>
-                            Dernière mise à jour : Aujourd'hui
-                        </p>
+                    <!-- Badge en ligne -->
+                    <div class="absolute -bottom-1 -right-1 px-1.5 py-0.5 bg-white dark:bg-gray-900 rounded-full border-2 border-white dark:border-gray-900 shadow-sm">
+                        <div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
                     </div>
                 </div>
                 
-                <div class="flex items-center gap-4">
-                    <span class="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 text-green-800 dark:text-green-300 text-lg font-bold px-5 py-2 rounded-full shadow flex items-center gap-2">
-                        <!-- SVG Offer/Tag -->
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
-                        </svg>
-                        <?php echo count($produits); ?> offres
-                    </span>
-                    <button onclick="scrollToTop()" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center" title="Remonter">
-                        <!-- SVG Arrow Up -->
-                        <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-                        </svg>
-                    </button>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <h2 class="text-base font-bold text-gray-900 dark:text-white"><?php echo $magasins; ?></h2>
+                        <?php if($magasins === $topStore): ?>
+                        <span class="px-1.5 py-0.5 bg-gradient-to-r from-yellow-400 to-amber-500 text-white text-[7px] font-bold rounded-full flex items-center gap-0.5">
+                            <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                            TOP
+                        </span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-[9px] text-gray-500 dark:text-gray-400 flex items-center gap-0.5">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            MAJ: 2min
+                        </span>
+                        <span class="w-0.5 h-0.5 bg-gray-300 rounded-full"></span>
+                        <span class="text-[9px] font-semibold text-indigo-600 dark:text-indigo-400">
+                            <?php echo count($produits); ?> offres
+                        </span>
+                    </div>
                 </div>
+            </div>
+            
+            <!-- Actions compactes -->
+            <div class="flex items-center gap-1">
+                <button onclick="scrollToTop()" class="p-1.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <svg class="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                    </svg>
+                </button>
+                <button class="p-1.5 bg-gray-100 dark:bg-gray-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 rounded-lg transition-colors group/btn">
+                    <svg class="w-3.5 h-3.5 text-gray-600 dark:text-gray-400 group-hover/btn:text-indigo-600 dark:group-hover/btn:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/>
+                    </svg>
+                </button>
             </div>
         </div>
         
-        <!-- Grille améliorée -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-            <?php foreach($produits as $produit => $details): 
-                // Calcul du pourcentage de réduction si prix d'origine et promo existent
+        <!-- Grille compacte premium -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
+            <?php foreach(array_slice($produits, 0, 5) as $produit => $details): 
                 $discountPercent = 0;
                 if(isset($details['prix_origine']) && isset($details['prix_promo']) && $details['prix_origine'] > 0) {
                     $discountPercent = round((($details['prix_origine'] - $details['prix_promo']) / $details['prix_origine']) * 100);
                 }
             ?>
-                <div class="group relative transform transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02]">
+                <div class="group relative bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-lg transition-all duration-300 overflow-hidden">
                     <?php require 'Composants/offre-card.php'; ?>
                     
-                    <!-- Badge de réduction -->
+                    <!-- Badge réduction compact -->
                     <?php if($discountPercent > 0): ?>
-                    <div class="absolute -top-3 -right-3 w-14 h-14 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg z-20 animate-pulse-slow">
-                        -<?php echo $discountPercent; ?>%
+                    <div class="absolute top-1.5 right-1.5 z-10">
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-gradient-to-br from-red-500 to-pink-500 rounded-full blur-sm opacity-60"></div>
+                            <div class="relative w-9 h-9 bg-gradient-to-br from-red-500 to-pink-500 text-white rounded-full flex flex-col items-center justify-center shadow-lg">
+                                <span class="text-[11px] font-extrabold leading-none">-<?php echo $discountPercent; ?>%</span>
+                            </div>
+                        </div>
                     </div>
                     <?php endif; ?>
+                    
+                    <!-- Overlay actions au hover -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-end justify-center p-2">
+                        <button class="w-full py-1.5 bg-white/90 dark:bg-gray-900/90 backdrop-blur text-[9px] font-semibold text-gray-900 dark:text-white rounded-lg hover:bg-white dark:hover:bg-gray-900 transition-colors flex items-center justify-center gap-1">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            Voir
+                        </button>
+                    </div>
                 </div>
             <?php endforeach; ?>
-        </div>
-        
-        <!-- Pagination pour beaucoup d'offres -->
-        <?php if(count($produits) > 12): ?>
-        <div class="flex justify-center mt-8">
-            <nav class="flex gap-2">
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2">
-                    Voir plus d'offres de <?php echo $magasins; ?>
-                    <!-- SVG Arrow Right -->
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            
+            <!-- Bouton voir plus compact -->
+            <?php if(count($produits) > 5): ?>
+            <button onclick="scrollToSection('<?php echo $magasinId; ?>')" 
+                    class="group flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md transition-all p-3 min-h-[120px]">
+                <div class="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
+                    <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                     </svg>
-                </button>
-            </nav>
+                </div>
+                <span class="text-[10px] font-semibold text-gray-900 dark:text-white">+<?php echo count($produits) - 5; ?></span>
+                <span class="text-[8px] text-gray-500 dark:text-gray-400">offres</span>
+            </button>
+            <?php endif; ?>
         </div>
-        <?php endif; ?>
-        
     </section>
     
+    <?php $index = isset($index) ? $index + 1 : 1; ?>
     <?php endforeach; ?>
-</main>
-
-<!-- Newsletter Section -->
-<section class="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 py-16 mt-12">
-    <div class="max-w-3xl mx-auto text-center px-4">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
-            <!-- SVG Mail/Envelope -->
-            <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-            </svg>
-            Ne ratez plus aucune promotion !
-        </h2>
-        <p class="text-gray-600 dark:text-gray-400 mb-8">Inscrivez-vous pour recevoir les offres exclusives en avant-première</p>
-        <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <div class="flex-grow relative">
-                <!-- SVG Mail inside input -->
-                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    
+    <!-- Section newsletter compacte -->
+    <div class="my-6 p-3 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 rounded-xl border border-indigo-200 dark:border-indigo-800/30 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md">
+                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                 </svg>
-                <input 
-                    type="email" 
-                    placeholder="Votre email" 
-                    class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required>
             </div>
-            <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
-                <!-- SVG Send/Paper Plane -->
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div>
+                <h3 class="text-xs font-bold text-gray-900 dark:text-white">Alertes prix</h3>
+                <p class="text-[8px] text-gray-500 dark:text-gray-400">Soyez informé en avant-première</p>
+            </div>
+        </div>
+        <form class="flex items-center gap-1">
+            <div class="relative">
+                <input type="email" placeholder="votre@email.com" 
+                       class="w-40 px-2 py-1.5 text-[9px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 placeholder-gray-400"
+                       required>
+            </div>
+            <button type="submit" 
+                    class="px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-[9px] font-semibold rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-1">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
                 </svg>
-                S'abonner
+                OK
             </button>
         </form>
     </div>
-</section>
+</main>
+
+<!-- Footer compact -->
+<div class="max-w-7xl mx-auto px-3 py-4 mt-2 border-t border-gray-200 dark:border-gray-800">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <div class="flex -space-x-1">
+                <div class="w-5 h-5 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full border border-white dark:border-gray-900"></div>
+                <div class="w-5 h-5 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full border border-white dark:border-gray-900"></div>
+                <div class="w-5 h-5 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full border border-white dark:border-gray-900"></div>
+            </div>
+            <span class="text-[8px] text-gray-500 dark:text-gray-400">© LSHIPROMO • <?php echo date('Y'); ?></span>
+        </div>
+        <div class="flex items-center gap-3">
+            <span class="text-[7px] text-gray-400 dark:text-gray-600 flex items-center gap-1">
+                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <?php echo $totalOffers; ?> offres
+            </span>
+            <span class="text-[7px] text-gray-400 dark:text-gray-600 flex items-center gap-1">
+                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <?php echo count($promotion); ?> magasins
+            </span>
+        </div>
+    </div>
+</div>
 
 <?php require 'portions/footer.php'; ?>
 
-<!-- Styles CSS optimisés -->
+<!-- Styles premium -->
 <style>
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px); }
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse-slow {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-out;
-}
-
-.animate-pulse-slow {
-    animation: pulse-slow 2s infinite;
-}
-
-.animate-bounce {
-    animation: bounce 1s infinite;
-}
-
 .magasin-section {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    animation: slideIn 0.4s ease-out;
 }
 
-.magasin-section.visible {
-    opacity: 1;
-    transform: translateY(0);
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.magasin-filter.active {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border-color: transparent;
+}
+.magasin-filter.active span:first-child {
+    background: white;
+    color: #6366f1;
 }
 
 .grid > div {
-    animation: fadeIn 0.5s ease-out forwards;
+    animation: slideIn 0.3s ease-out forwards;
+    opacity: 0;
+}
+@for $i from 1 through 10 {
+    .grid > div:nth-child(#{$i}) { animation-delay: $i * 0.03s; }
 }
 
-/* Délais d'animation dynamiques */
-.grid > div:nth-child(1) { animation-delay: 0.1s; }
-.grid > div:nth-child(2) { animation-delay: 0.2s; }
-.grid > div:nth-child(3) { animation-delay: 0.3s; }
-.grid > div:nth-child(4) { animation-delay: 0.4s; }
-.grid > div:nth-child(5) { animation-delay: 0.5s; }
-.grid > div:nth-child(6) { animation-delay: 0.6s; }
-.grid > div:nth-child(7) { animation-delay: 0.7s; }
-.grid > div:nth-child(8) { animation-delay: 0.8s; }
-
-/* Amélioration du hover */
+/* Glow effect */
 .group:hover .shadow-lg {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.1), 0 8px 10px -6px rgba(99, 102, 241, 0.1);
 }
 
-/* Scrollbar personnalisée */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
-    border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, #2563eb, #7c3aed);
-}
-
-/* Style pour le filtre actif */
-.magasin-filter.active {
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
-    color: white !important;
-    transform: scale(1.05);
-}
-
-/* Animation pour les icônes */
-svg {
-    transition: all 0.3s ease;
-}
-
-.magasin-filter:hover svg {
-    transform: scale(1.1);
-}
-
-button:hover svg {
-    transform: translateY(-2px);
-}
+/* Custom scroll */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #6366f1, #8b5cf6); border-radius: 2px; }
 </style>
 
-<!-- Scripts améliorés -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Animation au scroll
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    });
-
-    document.querySelectorAll('.magasin-section').forEach(section => {
-        observer.observe(section);
-    });
-
-    // Gestion des filtres
-    const filters = document.querySelectorAll('.magasin-filter');
-    filters.forEach(filter => {
-        filter.addEventListener('click', function() {
-            // Retirer la classe active de tous les boutons
-            filters.forEach(f => f.classList.remove('active'));
-            // Ajouter la classe active au bouton cliqué
-            this.classList.add('active');
-        });
-    });
-
-    // Mettre en surbrillance le magasin visible
-    const magasinSections = document.querySelectorAll('.magasin-section');
-    const headerObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const magasinId = entry.target.id;
-                const correspondingFilter = document.querySelector(`[data-magasin="${magasinId}"]`);
-                if (correspondingFilter) {
-                    filters.forEach(f => f.classList.remove('active'));
-                    correspondingFilter.classList.add('active');
-                }
-            }
-        });
-    }, { threshold: 0.3 });
-
-    magasinSections.forEach(section => {
-        headerObserver.observe(section);
-    });
-
-    // Animation pour les icônes de la newsletter
-    const newsletterIcon = document.querySelector('.text-blue-600');
-    if (newsletterIcon) {
-        setInterval(() => {
-            newsletterIcon.classList.toggle('animate-bounce');
-        }, 3000);
-    }
-});
-
-// Fonction pour scroller vers une section
+// Smooth scroll premium
 function scrollToSection(magasinId) {
     const element = document.getElementById(magasinId);
     if (element) {
-        window.scrollTo({
-            top: element.offsetTop - 100,
-            behavior: 'smooth'
-        });
-        
-        // Effet de surbrillance
-        element.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
-        setTimeout(() => {
-            element.style.backgroundColor = '';
-        }, 1000);
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.classList.add('ring-4', 'ring-indigo-500/20', 'rounded-lg', 'transition-all', 'duration-500');
+        setTimeout(() => element.classList.remove('ring-4', 'ring-indigo-500/20'), 1000);
     }
 }
 
-// Fonction pour remonter en haut
 function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Détection du scroll pour cacher/afficher le filtre
+function resetFilters() {
+    document.querySelectorAll('.magasin-filter').forEach(f => f.classList.remove('active'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Intersection Observer pour les filtres
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const magasinId = entry.target.id;
+            document.querySelectorAll('.magasin-filter').forEach(f => {
+                f.classList.toggle('active', f.dataset.magasin === magasinId);
+            });
+        }
+    });
+}, { threshold: 0.3, rootMargin: '-50px 0px -50px 0px' });
+
+document.querySelectorAll('.magasin-section').forEach(s => observer.observe(s));
+
+// Filtre sticky dynamique
 let lastScroll = 0;
 window.addEventListener('scroll', () => {
-    const filterBar = document.querySelector('.sticky.top-4');
-    if (!filterBar) return;
-    
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll <= 100) {
-        filterBar.style.opacity = '1';
-        filterBar.style.transform = 'translateY(0)';
-    } else if (currentScroll > lastScroll) {
-        // Scrolling down
-        filterBar.style.opacity = '0.8';
-        filterBar.style.transform = 'translateY(-20px)';
+    const filter = document.querySelector('.sticky');
+    if (window.scrollY > 100) {
+        filter.style.transform = 'translateY(0)';
+        filter.style.opacity = '0.95';
     } else {
-        // Scrolling up
-        filterBar.style.opacity = '1';
-        filterBar.style.transform = 'translateY(0)';
+        filter.style.transform = 'translateY(0)';
+        filter.style.opacity = '1';
     }
-    
-    lastScroll = currentScroll;
+    lastScroll = window.scrollY;
 });
 </script>
