@@ -21,7 +21,7 @@ uasort($promotion, function($a, $b) {
                 <svg class="w-12 h-12 md:w-16 md:h-16 text-yellow-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19ZM5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5ZM21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.92 10.53 7.7 12.31C7.57 13.33 7.61 14.37 7.84 15.41L2.29 20.96C1.9 21.35 1.9 21.98 2.29 22.37C2.68 22.76 3.31 22.76 3.7 22.37L8.59 17.48C9.63 17.71 10.67 17.75 11.69 17.62C13.47 17.4 15.88 16.51 18.07 14.32C23.73 8.66 21.61 2.39 21.61 2.39Z"/>
                 </svg>
-                Promotions en direct
+                Les meilleures offres
             </h1>
             <p class="text-xl md:text-2xl opacity-90 mb-8 flex items-center justify-center gap-2">
                 <!-- SVG Verified -->
@@ -59,16 +59,38 @@ uasort($promotion, function($a, $b) {
                     </div>
                     <div class="text-sm opacity-80">Offres actives</div>
                 </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-yellow-300 flex items-center justify-center gap-2">
-                        <!-- SVG Clock -->
-                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org2000/svg">
-                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                        </svg>
-                        24h
-                    </div>
-                    <div class="text-sm opacity-80">Mises à jour</div>
-                </div>
+               <div class="text-center">
+    <div class="text-3xl font-bold text-yellow-300 flex items-center justify-center gap-2">
+        <!-- SVG Clock -->
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+        </svg>
+        <?php
+        // Version 1: Basée sur l'heure actuelle du serveur
+        date_default_timezone_set('Europe/Paris'); // À adapter à votre fuseau horaire
+        
+        // Calcul du temps depuis la dernière mise à jour
+        $lastUpdateHour = 8; // Heure de la dernière mise à jour (ex: 8h du matin)
+        $currentHour = (int)date('H');
+        
+        if ($currentHour >= $lastUpdateHour) {
+            $hoursSinceUpdate = $currentHour - $lastUpdateHour;
+        } else {
+            $hoursSinceUpdate = (24 - $lastUpdateHour) + $currentHour;
+        }
+        
+        // Afficher dynamiquement
+        if ($hoursSinceUpdate < 1) {
+            echo "<span class='text-green-400 animate-pulse'>Maintenant</span>";
+        } elseif ($hoursSinceUpdate <= 24) {
+            echo $hoursSinceUpdate . "h";
+        } else {
+            echo "24h+";
+        }
+        ?>
+    </div>
+    <div class="text-sm opacity-80">Mises à jour</div>
+</div>
             </div>
         </div>
     </div>

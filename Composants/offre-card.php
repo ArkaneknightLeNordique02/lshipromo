@@ -49,7 +49,7 @@
         </button>
         
         <!-- Bouton WhatsApp -->
-        <a href="https://wa.me/VOTRE_NUMERO?text=Bonjour, je suis intéressé par : <?php echo urlencode($produit . ' - ' . $details['prix-promo'] . $details['devise']); ?>"
+        <a href="https://wa.me/+243801816424, je suis intéressé par : <?php echo urlencode($produit . ' - ' . $details['prix-promo'] . $details['devise']); ?>"
            target="_blank"
            class="whatsapp-btn group/wa relative bg-gradient-to-br from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white p-2.5 rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-green-500/50"
            aria-label="Commander sur WhatsApp">
@@ -63,16 +63,6 @@
     <!-- Section image -->
     <div class="image-section relative overflow-hidden rounded-t-2xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800">
         <!-- Badge temps limité -->
-        <?php if($hasDiscount && $discount > 30): ?>
-        <div class="time-limited-badge absolute top-4 right-4 z-10 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-lg animate-pulse flex items-center gap-1">
-            <!-- SVG Clock -->
-            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-            </svg>
-            LIMITÉ
-        </div>
-        <?php endif; ?>
-        
         <!-- Image produit -->
         <div class="relative h-56 overflow-hidden">
             <img class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" 
@@ -94,55 +84,10 @@
                 </button>
             </div>
         </div>
-        
-        <!-- Barre de progression stock -->
-        <?php if(rand(0, 1)): ?>
-        <div class="stock-progress px-4 pb-3">
-            <div class="text-xs text-gray-600 dark:text-gray-400 mb-1 flex justify-between">
-                <span>Stock limité</span>
-                <span class="font-semibold"><?php echo rand(5, 30); ?> restants</span>
-            </div>
-            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div class="bg-gradient-to-r from-green-500 to-emerald-600 h-2 rounded-full" style="width: <?php echo rand(30, 90); ?>%"></div>
-            </div>
-        </div>
-        <?php endif; ?>
     </div>
     
     <!-- Section contenu -->
     <div class="content-section p-5">
-        <!-- En-tête produit -->
-        <div class="product-header flex items-center justify-between mb-3">
-            <span class="category-badge text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
-                <?php echo $details['categorie'] ?? 'PREMIUM'; ?>
-            </span>
-            
-            <!-- Évaluation -->
-            <div class="rating flex items-center gap-1">
-                <?php 
-                $rating = $details['rating'] ?? rand(35, 50) / 10;
-                $fullStars = floor($rating);
-                $hasHalfStar = ($rating - $fullStars) >= 0.5;
-                ?>
-                <?php for($i = 1; $i <= 5; $i++): ?>
-                    <?php if($i <= $fullStars): ?>
-                        <svg class="w-4 h-4 text-yellow-400 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                    <?php elseif($hasHalfStar && $i == $fullStars + 1): ?>
-                        <svg class="w-4 h-4 text-yellow-400 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77V2z"/>
-                        </svg>
-                    <?php else: ?>
-                        <svg class="w-4 h-4 text-gray-300 dark:text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                    <?php endif; ?>
-                <?php endfor; ?>
-                <span class="rating-text text-xs text-gray-600 dark:text-gray-400 ml-1">(<?php echo $rating; ?>)</span>
-            </div>
-        </div>
-        
         <!-- Titre produit -->
         <h3 class="product-title text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
             <?php echo htmlspecialchars($produit); ?>
@@ -151,7 +96,7 @@
         <!-- Description -->
         <div class="product-description mb-4">
             <p class="description-text text-sm text-gray-600 dark:text-gray-300 line-clamp-2 transition-all duration-300">
-                <?php echo htmlspecialchars($details['description'] ?? 'Produit premium avec qualité exceptionnelle et garantie satisfait ou remboursé.'); ?>
+                <?php echo htmlspecialchars($details['description'] ?? 'Produit de qualité exceptionnelle et garantie satisfait ou remboursé.'); ?>
             </p>
         </div>
         
@@ -160,11 +105,11 @@
             <div class="flex items-center justify-between mb-2">
                 <div class="prices">
                     <span class="current-price text-2xl font-bold text-gray-900 dark:text-white">
-                        <?php echo number_format($details['prix-promo'], 2); ?><?php echo $details['devise']; ?>
+                        <?php echo number_format($details['prix-promo']); ?><?php echo $details['devise']; ?>
                     </span>
                     <?php if($hasDiscount): ?>
                     <span class="original-price text-sm text-gray-400 line-through ml-2">
-                        <?php echo number_format($details['prix-intial'], 2); ?><?php echo $details['devise']; ?>
+                        <?php echo number_format($details['prix-intial']); ?><?php echo $details['devise']; ?>
                     </span>
                     <?php endif; ?>
                 </div>
@@ -175,7 +120,7 @@
                         Économisez <?php echo $discount; ?>%
                     </div>
                     <div class="saved-amount text-xs text-gray-600 dark:text-gray-400">
-                        <?php echo number_format($details['prix-intial'] - $details['prix-promo'], 2); ?><?php echo $details['devise']; ?> économisés
+                        <?php echo number_format($details['prix-intial'] - $details['prix-promo']); ?><?php echo $details['devise']; ?> économisés
                     </div>
                 </div>
                 <?php endif; ?>
@@ -183,23 +128,71 @@
         </div>
         
         <!-- Bouton principal -->
-        <a href="https://wa.me/VOTRE_NUMERO?text=Bonjour, je suis intéressé par : <?php echo urlencode($produit . ' - Promotion ' . $discount . '% - Prix: ' . $details['prix-promo'] . $details['devise']); ?>" 
-           target="_blank"
-           class="main-button group/btn relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 p-4 text-white shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-green-500/50 hover:from-green-600 hover:to-emerald-700 active:scale-95">
-            
-            <!-- Effet brillant -->
-            <div class="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            
-            <!-- Contenu bouton -->
-            <span class="flex items-center justify-center gap-2 relative z-10 font-bold tracking-wide text-sm md:text-base">
-                <!-- SVG WhatsApp -->
-                <svg class="w-5 h-5 transition-all duration-300 group-hover/btn:rotate-12 group-hover/btn:scale-110" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm0 2a8 8 0 100 16 8 8 0 000-16zm1 3v4h4v2h-4v4h-2v-4H7v-2h4V7h2z"/>
-                </svg>
-                <span>COMMANDER SUR WHATSAPP</span>
-            </span>
-        </a>
+     <a href="https://wa.me/243801816424?text=<?php echo urlencode('Bonjour, je suis intéressé par : ' . $produit . "\n\n" . '🔹 Offre: ' . $discount . '% de réduction' . "\n" . '🔹 Prix promotionnel: ' . $details['prix-promo'] . $details['devise'] . "\n" . '🔹 Prix original: ' . $details['prix-intial'] . $details['devise'] . "\n\n" . 'Je souhaite commander ce produit. Merci de me donner plus d\'informations.'); ?>"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="whatsapp-main-btn group relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-[#25D366] to-[#128C7E] p-4 text-white font-bold shadow-lg shadow-[#25D366]/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-[#25D366]/50 hover:from-[#128C7E] hover:to-[#075E54] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+   aria-label="Commander ce produit sur WhatsApp">
+    
+    <!-- Effet de brillance amélioré -->
+    <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+    
+    <!-- Conteneur principal du bouton -->
+    <div class="flex items-center justify-center gap-3 relative z-10">
         
+        <!-- Logo WhatsApp officiel avec animation -->
+        <div class="relative">
+            <svg class="w-6 h-6 md:w-7 md:h-7 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12 drop-shadow-lg" 
+                 xmlns="http://www.w3.org/2000/svg" 
+                 viewBox="0 0 24 24" 
+                 fill="white">
+                <path d="M12.032 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.96 9.96 0 0 1-4.587-1.112l-3.826 1.067 1.067-3.826A9.96 9.96 0 0 1 2 12.032C2 6.509 6.509 2 12.032 2zm0 1.5a8.532 8.532 0 0 0-8.532 8.532c0 1.502.387 2.91 1.063 4.136l.15.267-.803 2.878 2.878-.803.267.15a8.532 8.532 0 0 0 13.019-7.428 8.532 8.532 0 0 0-8.532-8.532z"/>
+            </svg>
+            
+            <!-- Petit point de notification animé -->
+            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-white rounded-full animate-ping opacity-75"></span>
+            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-white rounded-full"></span>
+        </div>
+        
+        <!-- Texte du bouton avec effets -->
+        <span class="flex flex-col items-start">
+            <span class="text-sm md:text-base font-bold tracking-wide flex items-center gap-1">
+                COMMANDER SUR WHATSAPP
+                <!-- Flèche animée -->
+                <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                     xmlns="http://www.w3.org/2000/svg" 
+                     fill="none" 
+                     viewBox="0 0 24 24" 
+                     stroke="white" 
+                     stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </span>
+            
+            <!-- Sous-titre avec le prix et réduction -->
+            <span class="text-[10px] md:text-xs text-white/80 font-normal">
+                ⚡ <?php echo $discount; ?>% OFF • <?php echo number_format($details['prix-promo'], 0); ?><?php echo $details['devise']; ?>
+            </span>
+        </span>
+    </div>
+</a>
+
+<style>
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes rotate360 {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.group:hover .group-hover\:rotate-360 {
+    animation: rotate360 0.7s ease-in-out;
+}
+</style>
         <!-- Informations -->
         <div class="info-section mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 grid grid-cols-2 gap-2 text-xs text-gray-500 dark:text-gray-400">
             <div class="info-item flex items-center">
